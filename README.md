@@ -38,9 +38,10 @@ resources:
 | `legend_alignment` | `left` \| `center` \| `right` | `left` | Legend horizontal alignment |
 | `show_state` | `bar` \| `legend` \| `both` \| `none` | `legend` | Where to show entity values |
 | `sort` | `abc` \| `cba` \| `highest` \| `lowest` \| `custom` | `highest` | Segment order (left → right) |
-| `bar_height` | number | `24` | Bar height in pixels |
-| `bar_radius` | number | `4` | Bar segment border-radius (px) |
-| `gradient` | `none` \| `left` \| `right` | `none` | Gradient direction (left = lighter→base, right = darker→base) |
+| `bar_autofill` | boolean | `false` | Bar fills card height (with padding); overrides bar_height |
+| `bar_height` | number | `24` | Bar height in pixels (ignored when bar_autofill) |
+| `bar_radius` | number | theme | Bar segment border-radius (px); omit for theme default |
+| `gradient` | `none` \| `left` \| `right` \| `center` \| `top` \| `bottom` | `none` | Gradient direction |
 | `remove_background` | boolean | `false` | Remove card background; bar fills the grid cell |
 | `entities` | array | `[]` | Entity list (see below) |
 | `grid_options` | object | — | Passed through for dashboard layout |
@@ -73,8 +74,8 @@ show_state: legend/bar/both/none
 sort: abc/cba/highest/lowest/custom
 
 bar_height: 32
-bar_radius: 8
-gradient: none              # none | left | right
+# bar_radius: 8             # omit for theme default
+gradient: none              # none | left | right | center | top | bottom
 # remove_background: false   # true = no card bg, bar fills grid cell
 
 entities:
