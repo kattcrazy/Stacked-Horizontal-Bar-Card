@@ -68,9 +68,8 @@ Use the card as a 0–100% progress bar by combining your number entity with a h
 
 ### UI config
 
-![Config-1](images/Config-1.png)
-
-![Config-2](images/Config-2.png)
+<p><img src="images/Config-1.png" alt="Config 1"></p>
+<p><img src="images/Config-2.png" alt="Config 2"></p>
 
 ### Full config with all options
 For your copy-paste convenience!
