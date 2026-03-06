@@ -6,7 +6,8 @@ A Home Assistant Lovelace card that displays a horizontal stacked bar — like a
 
 ## Installation
 
-### HACS (recommended)
+<details>
+<summary><strong>HACS (recommended)</strong></summary>
 
 1. Open HACS
 2. Click the three dots in the top right, then 'Custom repositories'
@@ -14,7 +15,10 @@ A Home Assistant Lovelace card that displays a horizontal stacked bar — like a
 4. Search for 'Stacked Horizontal Bar Card' in HACS and download
 5. Reload your page!
 
-### Manual
+</details>
+
+<details>
+<summary><strong>Manual</strong></summary>
 
 1. Download `stacked-horizontal-bar-card.js` from the [releases](https://github.com/kattcrazy/Stacked-Horizontal-Bar-Card/releases) page
 2. Place it in your `config/www/` folder
@@ -25,6 +29,8 @@ resources:
     type: module
 ```
 4. Refresh your dashboard or Home Assistant if needed
+
+</details>
 
 ## Configuration
 
@@ -59,10 +65,13 @@ All options support Jinja templates (strings containing `{{ }}`).
 
 Entities must have numeric values (from entity state or from a Jinja template in `entity`). Proportions are computed from the sum.
 
-### UI config
+<details>
+<summary><strong>UI config</strong></summary>
 
 <p><img src="images/Config-1.png" alt="Config 1"></p>
 <p><img src="images/Config-2.png" alt="Config 2"></p>
+
+</details>
 
 ### Use as a progress bar (no helper needed)
 
@@ -115,7 +124,8 @@ entities:
 
 <p style="max-width: 100vw;"><img src="images/Liquid-ice.png" alt="Liquid Ice" style="max-width: 33.33%;"> <img src="images/Light.png" alt="Light" style="max-width: 33.33%;"> <img src="images/Dark.png" alt="Dark" style="max-width: 33.33%;"></p>
 
-### 1
+<details>
+<summary><strong>1</strong></summary>
 
 ```yaml
 type: custom:stacked-horizontal-bar-card
@@ -150,7 +160,10 @@ remove_background: false
 gradient: none
 ```
 
-### 2
+</details>
+
+<details>
+<summary><strong>2</strong></summary>
 
 ```yaml
 type: custom:stacked-horizontal-bar-card
@@ -186,7 +199,10 @@ fill_card: false
 show_title: true
 ```
 
-### 3
+</details>
+
+<details>
+<summary><strong>3</strong></summary>
 
 ```yaml
 type: custom:stacked-horizontal-bar-card
@@ -228,7 +244,10 @@ alignment: right
 bar_radius: 0
 ```
 
-### 4
+</details>
+
+<details>
+<summary><strong>4</strong></summary>
 
 ```yaml
 type: custom:stacked-horizontal-bar-card
@@ -270,7 +289,10 @@ alignment: center
 bar_radius: 100
 ```
 
-### 5
+</details>
+
+<details>
+<summary><strong>5</strong></summary>
 
 ```yaml
 type: custom:stacked-horizontal-bar-card
@@ -306,7 +328,10 @@ fill_card: true
 bar_radius: 0
 ```
 
-### 6
+</details>
+
+<details>
+<summary><strong>6</strong></summary>
 
 ```yaml
 type: custom:stacked-horizontal-bar-card
@@ -341,6 +366,8 @@ alignment: center
 fill_card: false
 title: Protocols
 ```
+
+</details>
 
 ## About
 This is my first Home Assistant card that I will be maintaining for public use. I have tested it on my own setup and it works perfectly! Please report an issue if something doesn't work, I'll try my best to fix it.
