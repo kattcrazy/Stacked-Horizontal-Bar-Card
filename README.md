@@ -2,8 +2,6 @@
 
 A Home Assistant Lovelace card that displays a horizontal stacked bar — like a pie chart in a line. Each segment represents an entity's numeric value with configurable colors, gradients, and ordering.
 
-[![GitHub](https://img.shields.io/badge/GitHub-kattcrazy%2FStacked--Horizontal--Bar--Card-blue)](https://github.com/kattcrazy/Stacked-Horizontal-Bar-Card)
-
 ## Installation
 
 ### HACS (recommended)
@@ -40,6 +38,8 @@ resources:
 | `sort` | `abc` \| `cba` \| `highest` \| `lowest` \| `custom` | `highest` | Segment order (left → right) |
 | `bar_height` | number | `24` | Bar height in pixels |
 | `bar_radius` | number | `4` | Bar segment border-radius (px) |
+| `gradient` | `none` \| `left` \| `right` | `none` | Gradient direction (left = light→right, right = dark→right) |
+| `remove_background` | boolean | `false` | Remove card background; bar fills the grid cell |
 | `entities` | array | `[]` | Entity list (see below) |
 | `grid_options` | object | — | Passed through for dashboard layout |
 
@@ -50,7 +50,6 @@ resources:
 | `entity` | string | required | Entity ID |
 | `name` | string | — | Override name; omit to use friendly name |
 | `color` | string | auto | Hex (e.g. `#FF0000`) or HA variable (e.g. `var(--primary-color)`) |
-| `gradient` | boolean | `false` | Use left-to-right gradient (color → lightened) |
 | `order` | number | — | Used when `sort: custom` |
 
 Entities must have numeric `state` values. Proportions are computed from the sum of all values.
@@ -73,12 +72,13 @@ sort: abc/cba/highest/lowest/custom
 
 bar_height: 32
 bar_radius: 8
+gradient: none              # none | left | right
+# remove_background: false   # true = no card bg, bar fills grid cell
 
 entities:
   - entity: sensor.grid_usage
     name: Grid              # omit to use friendly_name
     color: '#4472C4'
-    gradient: false
     order: 1
 
 ```
