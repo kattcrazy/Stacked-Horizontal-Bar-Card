@@ -55,6 +55,10 @@ resources:
 
 Entities must have numeric `state` values. Proportions are computed from the sum of all values.
 
+### UI config
+
+![Config-1](images/Config-1.png) ![Config-1](images/Config-2.png)
+
 ### Full config with all options
 For your copy-paste convenience!
 
@@ -87,6 +91,234 @@ entities:
 
 ## Config Examples
 
+![Liquid Ice](images/Liquid-Ice.png) ![Light](images/Light.png) ![Dark](images/Dark.png)
+
+### 1
+
+```yaml
+type: custom:stacked-horizontal-bar-card
+show_legend: false
+show_state: none
+sort: highest
+bar_height: 90
+bar_radius: 8
+entities:
+  - entity: sensor.wifi_devices
+    name: Wifi
+    gradient: true
+    color: "#7CD5FD"
+  - entity: sensor.local_devices
+    name: Local
+    gradient: true
+    color: "#A2D7A4"
+  - entity: sensor.z2mqtt_devices
+    gradient: true
+    color: "#FFDE7A"
+    name: Z2MQTT
+  - entity: sensor.unlabelled_devices
+    gradient: true
+    color: "#BCBCBC"
+    name: Unlabelled
+legend_position: bottom
+title_position: top
+grid_options:
+  columns: 12
+  rows: 2
+remove_background: false
+gradient: none
+```
+
+### 2
+
+```yaml
+type: custom:stacked-horizontal-bar-card
+show_legend: true
+show_state: none
+sort: abc
+bar_height: 24
+entities:
+  - entity: sensor.wifi_devices
+    name: Wifi
+    gradient: true
+    color: "#7CD5FD"
+  - entity: sensor.local_devices
+    name: Local
+    gradient: true
+    color: "#A2D7A4"
+  - entity: sensor.z2mqtt_devices
+    gradient: true
+    color: "#FFDE7A"
+    name: Z2MQTT
+  - entity: sensor.unlabelled_devices
+    gradient: true
+    color: "#BCBCBC"
+    name: Unlabelled
+legend_position: top
+title_position: bottom
+gradient: right
+title: Protocols
+grid_options:
+  columns: 12
+  rows: auto
+fill_card: false
+show_title: true
+```
+
+### 3
+
+```yaml
+type: custom:stacked-horizontal-bar-card
+show_legend: true
+show_state: bar
+sort: custom
+bar_height: auto
+entities:
+  - entity: sensor.wifi_devices
+    name: Wifi
+    gradient: true
+    color: "#7CD5FD"
+    order: 1
+  - entity: sensor.local_devices
+    name: Local
+    gradient: true
+    color: "#A2D7A4"
+    order: 2
+  - entity: sensor.z2mqtt_devices
+    gradient: true
+    color: "#FFDE7A"
+    name: Z2MQTT
+    order: 3
+  - entity: sensor.unlabelled_devices
+    gradient: true
+    color: "#BCBCBC"
+    name: Unlabelled
+    order: 4
+legend_position: bottom
+title_position: bottom
+gradient: top
+title: Protocols
+grid_options:
+  columns: 12
+  rows: 2
+fill_card: false
+show_title: true
+alignment: right
+bar_radius: 0
+```
+
+### 4
+
+```yaml
+type: custom:stacked-horizontal-bar-card
+show_legend: true
+show_state: legend
+sort: cba
+bar_height: auto
+entities:
+  - entity: sensor.wifi_devices
+    name: Wifi
+    gradient: true
+    color: "#7CD5FD"
+    order: 1
+  - entity: sensor.local_devices
+    name: Local
+    gradient: true
+    color: "#A2D7A4"
+    order: 2
+  - entity: sensor.z2mqtt_devices
+    gradient: true
+    color: "#FFDE7A"
+    name: Z2MQTT
+    order: 3
+  - entity: sensor.unlabelled_devices
+    gradient: true
+    color: "#BCBCBC"
+    name: Unlabelled
+    order: 4
+legend_position: top
+title_position: bottom
+gradient: top
+title: Protocols
+grid_options:
+  columns: 12
+  rows: 2
+fill_card: false
+show_title: false
+alignment: center
+bar_radius: 100
+```
+
+### 5
+
+```yaml
+type: custom:stacked-horizontal-bar-card
+show_legend: false
+show_state: none
+sort: cba
+bar_height: auto
+entities:
+  - entity: sensor.wifi_devices
+    name: Wifi
+    gradient: true
+    color: "#7CD5FD"
+  - entity: sensor.local_devices
+    name: Local
+    gradient: true
+    color: "#A2D7A4"
+  - entity: sensor.z2mqtt_devices
+    gradient: true
+    color: "#FFDE7A"
+    name: Z2MQTT
+  - entity: sensor.unlabelled_devices
+    gradient: true
+    color: "#BCBCBC"
+    name: Unlabelled
+legend_position: bottom
+title_position: top
+grid_options:
+  columns: 12
+  rows: 4
+gradient: none
+alignment: center
+fill_card: true
+bar_radius: 0
+```
+
+### 6
+
+```yaml
+type: custom:stacked-horizontal-bar-card
+show_legend: true
+show_state: bar
+sort: lowest
+bar_height: auto
+entities:
+  - entity: sensor.wifi_devices
+    name: Wifi
+    gradient: true
+    color: "#7CD5FD"
+  - entity: sensor.local_devices
+    name: Local
+    gradient: true
+    color: "#A2D7A4"
+  - entity: sensor.z2mqtt_devices
+    gradient: true
+    color: "#FFDE7A"
+    name: Z2MQTT
+  - entity: sensor.unlabelled_devices
+    gradient: true
+    color: "#BCBCBC"
+    name: Unlabelled
+legend_position: bottom
+title_position: top
+grid_options:
+  columns: 12
+  rows: 4
+gradient: left
+alignment: center
+fill_card: false
+title: Protocols
+```
 
 ## About
 This is my first Home Assistant card that I will be maintaining for public use. I have tested it on my own setup and it works perfectly! Please report an issue if something doesn't work, I'll try my best to fix it.
