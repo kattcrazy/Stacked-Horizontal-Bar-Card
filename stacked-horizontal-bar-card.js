@@ -52,6 +52,7 @@ class StackedHorizontalBarCard extends LitElement {
       type: 'custom:stacked-horizontal-bar-card',
       entities: [],
       sort: 'highest',
+      show_title: true,
       show_legend: true,
       show_state: 'legend',
       bar_height: 24,
@@ -100,15 +101,18 @@ class StackedHorizontalBarCard extends LitElement {
     const cfg = this._config;
     const segments = this._getSortedSegments();
     const total = segments.reduce((s, seg) => s + seg.value, 0);
-    const barHeight = cfg.bar_height ?? 24;
+    const barAutofill = cfg.bar_height === 'auto' || cfg.bar_autofill === true;
+    const barHeight = barAutofill ? 24 : (typeof cfg.bar_height === 'number' ? cfg.bar_height : 24);
     const barRadius = cfg.bar_radius != null && cfg.bar_radius !== '' ? cfg.bar_radius : 'var(--ha-card-border-radius, 12px)';
     const showState = cfg.show_state || 'legend';
     const showOnBar = showState === 'bar' || showState === 'both';
     const showLegend = cfg.show_legend !== false;
     const showInLegend = showState === 'legend' || showState === 'both';
+    const alignment = cfg.alignment ?? cfg.title_alignment ?? cfg.legend_alignment ?? 'left';
+    const fillCard = cfg.fill_card === true || cfg.remove_background === true;
 
     if (segments.length === 0 || total <= 0) {
-      const noBg = cfg.remove_background === true;
+      const noBg = fillCard;
       return html`
         <div class="card-content empty ${noBg ? 'no-bg' : ''}">
           <span class="empty-text">No data</span>
@@ -143,7 +147,7 @@ class StackedHorizontalBarCard extends LitElement {
 
     const legendEl = showLegend
       ? html`
-          <div class="legend" style="justify-content:${legendAlign === 'center' ? 'center' : legendAlign === 'right' ? 'flex-end' : 'flex-start'}">
+          <div class="legend" style="justify-content:${alignment === 'center' ? 'center' : alignment === 'right' ? 'flex-end' : 'flex-start'}">
             ${segments.map(
               (seg) => {
                 let swatchBg = seg.color;
@@ -165,32 +169,30 @@ class StackedHorizontalBarCard extends LitElement {
         `
       : nothing;
 
-    const titleAlign = cfg.title_alignment || 'left';
-    const legendAlign = cfg.legend_alignment || 'left';
-    const titleEl =
-      cfg.title != null && cfg.title !== ''
-        ? html`<div class="card-title" style="text-align:${titleAlign}">${cfg.title}</div>`
-        : nothing;
+    const showTitle = cfg.show_title !== false;
+    const hasTitle = showTitle && cfg.title != null && cfg.title !== '';
+    const titleEl = hasTitle
+      ? html`<div class="card-title" style="text-align:${alignment}">${cfg.title}</div>`
+      : nothing;
 
     const titlePos = cfg.title_position || 'top';
     const legendPos = cfg.legend_position || 'bottom';
-    const hasTitle = cfg.title != null && cfg.title !== '';
 
     const topParts = [];
-    if (titlePos === 'top' && hasTitle) topParts.push(titleEl);
-    if (legendPos === 'top' && showLegend) topParts.push(legendEl);
+    if (!fillCard && titlePos === 'top' && hasTitle) topParts.push(titleEl);
+    if (!fillCard && legendPos === 'top' && showLegend) topParts.push(legendEl);
     const bottomParts = [];
-    if (legendPos === 'bottom' && showLegend) bottomParts.push(legendEl);
-    if (titlePos === 'bottom' && hasTitle) bottomParts.push(titleEl);
+    if (!fillCard && legendPos === 'bottom' && showLegend) bottomParts.push(legendEl);
+    if (!fillCard && titlePos === 'bottom' && hasTitle) bottomParts.push(titleEl);
     const topBlock = topParts.length ? html`${topParts}` : null;
     const bottomBlock = bottomParts.length ? html`${bottomParts}` : null;
-    const noBg = cfg.remove_background === true;
-    const barAutofill = cfg.bar_autofill === true;
-    const barUsesFlex = noBg || barAutofill;
-    const barStyle = barUsesFlex ? 'flex:1;min-height:0;height:100%' : `height:${barHeight}px`;
+    const barUsesFlex = fillCard || barAutofill;
+    const barStyle = barUsesFlex
+      ? 'flex:1 1 0;min-height:0;overflow:hidden'
+      : `height:${barHeight}px;flex-shrink:0`;
 
     return html`
-      <div class="card-content ${noBg ? 'no-bg' : ''}">
+      <div class="card-content ${fillCard ? 'no-bg' : ''}">
         <div class="card-inner">
           ${topBlock ? html`<div class="top">${topBlock}</div>` : nothing}
           <div class="bar-container" style="${barStyle}">
@@ -204,8 +206,8 @@ class StackedHorizontalBarCard extends LitElement {
 
   render() {
     if (!this._config) return nothing;
-    const noBg = this._config.remove_background === true;
-    return html` <ha-card class="${noBg ? 'no-bg' : ''}">${this._getCardContent()}</ha-card> `;
+    const fillCard = this._config.fill_card === true || this._config.remove_background === true;
+    return html` <ha-card class="${fillCard ? 'no-bg' : ''}">${this._getCardContent()}</ha-card> `;
   }
 
   static styles = css`
@@ -228,6 +230,9 @@ class StackedHorizontalBarCard extends LitElement {
       display: flex;
       flex-direction: column;
       min-height: 0;
+      align-items: stretch;
+    }
+    .card-content:not(.empty) {
       justify-content: center;
     }
     .card-content.no-bg {
@@ -238,7 +243,9 @@ class StackedHorizontalBarCard extends LitElement {
       flex-direction: column;
       flex: 1;
       min-height: 0;
+      align-items: stretch;
       justify-content: center;
+      width: 100%;
     }
     .card-content.empty {
       display: flex;
@@ -263,20 +270,17 @@ class StackedHorizontalBarCard extends LitElement {
     .top {
       margin-bottom: 12px;
       flex-shrink: 0;
+      width: 100%;
     }
     .bar-container {
       width: 100%;
       overflow: hidden;
       flex-shrink: 0;
     }
-    .card-content.no-bg .bar-container {
-      flex: 1;
-      flex-shrink: 1;
-      min-height: 0;
-    }
     .bottom {
       margin-top: 12px;
       flex-shrink: 0;
+      width: 100%;
     }
     .bar {
       display: flex;
@@ -308,6 +312,7 @@ class StackedHorizontalBarCard extends LitElement {
       gap: 12px 16px;
       font-size: 12px;
       color: var(--secondary-text-color);
+      width: 100%;
     }
     .legend-item {
       display: flex;
@@ -406,6 +411,16 @@ class StackedHorizontalBarCardEditor extends LitElement {
         <div class="section">
           <div class="section-header">Title</div>
           <div class="option-row">
+            <label class="option-label">
+              <input
+                type="checkbox"
+                .checked=${c.show_title !== false}
+                @change=${(e) => this._valueChanged('show_title', e.target.checked)}
+              />
+              Show title
+            </label>
+          </div>
+          <div class="option-row">
             <label class="option-label">Title</label>
             <input
               type="text"
@@ -430,14 +445,15 @@ class StackedHorizontalBarCardEditor extends LitElement {
             <label class="option-label">Alignment</label>
             <select
               class="select"
-              .value=${c.title_alignment ?? 'left'}
-              @change=${(e) => this._valueChanged('title_alignment', e.target.value)}
+              .value=${c.alignment ?? c.title_alignment ?? c.legend_alignment ?? 'left'}
+              @change=${(e) => this._valueChanged('alignment', e.target.value)}
             >
               <option value="left">Left</option>
               <option value="center">Center</option>
               <option value="right">Right</option>
             </select>
           </div>
+          <div class="option-help">Alignment applies to both title and legend</div>
         </div>
 
         <div class="section">
@@ -464,18 +480,6 @@ class StackedHorizontalBarCardEditor extends LitElement {
             </select>
           </div>
           <div class="option-row">
-            <label class="option-label">Alignment</label>
-            <select
-              class="select"
-              .value=${c.legend_alignment ?? 'left'}
-              @change=${(e) => this._valueChanged('legend_alignment', e.target.value)}
-            >
-              <option value="left">Left</option>
-              <option value="center">Center</option>
-              <option value="right">Right</option>
-            </select>
-          </div>
-          <div class="option-row">
             <label class="option-label">Show state</label>
             <select
               class="select"
@@ -496,13 +500,16 @@ class StackedHorizontalBarCardEditor extends LitElement {
             <label class="option-label">
               <input
                 type="checkbox"
-                .checked=${!!c.remove_background}
-                @change=${(e) => this._valueChanged('remove_background', e.target.checked)}
+                .checked=${!!(c.fill_card || c.remove_background)}
+                @change=${(e) => {
+                this._valueChanged('fill_card', e.target.checked);
+                this._valueChanged('remove_background', undefined);
+              }}
               />
-              Remove background
+              Fill card
             </label>
           </div>
-          <div class="option-help">When enabled, removes the card background and makes the bar stretch to fill the grid cell</div>
+          <div class="option-help">When enabled, removes the card background and makes the bar fill the grid cell</div>
           <div class="option-row">
             <label class="option-label">Gradient</label>
             <select
@@ -532,22 +539,22 @@ class StackedHorizontalBarCardEditor extends LitElement {
             <label class="option-label">
               <input
                 type="checkbox"
-                .checked=${!!c.bar_autofill}
-                @change=${(e) => this._valueChanged('bar_autofill', e.target.checked)}
+                .checked=${c.bar_height === 'auto' || !!c.bar_autofill}
+                @change=${(e) => this._valueChanged('bar_height', e.target.checked ? 'auto' : 24)}
               />
-              Autofill to card height
+              Bar height: auto
             </label>
           </div>
-          <div class="option-help">When enabled, bar stretches to fill the card (with padding). Overrides manual height.</div>
+          <div class="option-help">When auto, bar fills card height (with padding). Otherwise use manual height below.</div>
           <div class="option-row">
             <label class="option-label">Bar height (px)</label>
             <input
               type="number"
-              class="input ${c.bar_autofill ? 'disabled' : ''}"
+              class="input ${c.bar_height === 'auto' || c.bar_autofill ? 'disabled' : ''}"
               min="8"
               max="128"
-              .value=${c.bar_height ?? 24}
-              ?disabled=${!!c.bar_autofill}
+              .value=${typeof c.bar_height === 'number' ? c.bar_height : 24}
+              ?disabled=${c.bar_height === 'auto' || !!c.bar_autofill}
               @input=${(e) => this._valueChanged('bar_height', parseInt(e.target.value) || 24)}
             />
           </div>

@@ -30,19 +30,18 @@ resources:
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `title` | string | — | Card title. Empty = hide |
+| `alignment` | `left` \| `center` \| `right` | `left` | Horizontal alignment for both title and legend |
+| `show_title` | boolean | `true` | Show title |
+| `title` | string | — | Card title text |
 | `title_position` | `top` \| `bottom` | `top` | Title placement |
-| `title_alignment` | `left` \| `center` \| `right` | `left` | Title horizontal alignment |
 | `show_legend` | boolean | `true` | Show legend with labels |
 | `legend_position` | `top` \| `bottom` | `bottom` | Legend placement |
-| `legend_alignment` | `left` \| `center` \| `right` | `left` | Legend horizontal alignment |
 | `show_state` | `bar` \| `legend` \| `both` \| `none` | `legend` | Where to show entity values |
 | `sort` | `abc` \| `cba` \| `highest` \| `lowest` \| `custom` | `highest` | Segment order (left → right) |
-| `bar_autofill` | boolean | `false` | Bar fills card height (with padding); overrides bar_height |
-| `bar_height` | number | `24` | Bar height in pixels (ignored when bar_autofill) |
+| `bar_height` | number \| `auto` | `24` | Bar height in px; use `auto` to fill space between title/legend |
 | `bar_radius` | number | theme | Bar segment border-radius (px); omit for theme default |
 | `gradient` | `none` \| `left` \| `right` \| `center` \| `top` \| `bottom` | `none` | Gradient direction |
-| `remove_background` | boolean | `false` | Remove card background; bar fills the grid cell |
+| `fill_card` | boolean | `false` | Remove card background; bar fills grid cell; hides title/legend |
 | `entities` | array | `[]` | Entity list (see below) |
 | `grid_options` | object | — | Passed through for dashboard layout |
 
@@ -64,25 +63,27 @@ Full config with all options :
 ```yaml
 type: custom:stacked-horizontal-bar-card
 
+alignment: left              # left | center | right (applies to title and legend)
+show_title: true
 title: Energy Usage
-title_position: top /bottom
+title_position: top          # top | bottom
 
 show_legend: true
-legend_position: top/bottom 
-show_state: legend/bar/both/none
+legend_position: bottom      # top | bottom
+show_state: legend           # legend | bar | both | none
 
-sort: abc/cba/highest/lowest/custom
+sort: highest                # abc | cba | highest | lowest | custom
 
-bar_height: 32
-# bar_radius: 8             # omit for theme default
-gradient: none              # none | left | right | center | top | bottom
-# remove_background: false   # true = no card bg, bar fills grid cell
+bar_height: 24               # number or 'auto' to fill space between title/legend
+# bar_radius: 8              # omit for theme default
+gradient: none               # none | left | right | center | top | bottom
+fill_card: false             # true = no card bg, bar fills grid cell, hides title/legend
 
 entities:
   - entity: sensor.grid_usage
-    name: Grid              # omit to use friendly_name
+    name: Grid               # omit to use friendly_name
     color: '#4472C4'
-    order: 1
+    order: 1                 # used when sort: custom
 
 ```
 
