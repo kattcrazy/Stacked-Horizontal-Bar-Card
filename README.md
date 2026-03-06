@@ -73,18 +73,22 @@ Entities must have numeric values (from entity state or from a Jinja template in
 
 </details>
 
-### Use as a progress bar (no helper needed)
-
-Put a Jinja template directly in `entity` for computed values:
+### Use as a progress bar
 
 ```yaml
+type: custom:stacked-horizontal-bar-card
 entities:
-  - entity: "{{ states('sensor.battery_level') | float }}"
-    name: Filled
-    color: '#2196F3'
-  - entity: "{{ 100 - states('sensor.battery_level') | float }}"
+  - entity: "{{ states('sensor.percent_finished') | float }}" # Your entity here
+    name: Completed
+    color: '#2196F3'  # Your colour here
+    order: 1
+  - entity: "{{ 100 - states('sensor.percent_finished') | float }}" # Your entity here
     name: Remaining
-    color: '#E0E0E0'
+    color: '#E0E0E0' # Dimmer/brighter version of the colour here
+    order: 2
+show_legend: false
+show_state: none
+sort: custom
 ```
 
 
@@ -122,7 +126,7 @@ entities:
 
 ## Config Examples
 
-<p style="max-width: 100vw;"><img src="images/Liquid-ice.png" alt="Liquid Ice" style="max-width: 33.33%;"> <img src="images/Light.png" alt="Light" style="max-width: 33.33%;"> <img src="images/Dark.png" alt="Dark" style="max-width: 33.33%;"></p>
+![Liquid Ice](images/Liquid-ice.png) ![Light](images/Light.png) ![Dark](images/Dark.png)
 
 <details>
 <summary><strong>1</strong></summary>
@@ -368,6 +372,9 @@ title: Protocols
 ```
 
 </details>
+
+## To-Do
+- Add more example use cases like the progress bar
 
 ## About
 This is my first Home Assistant card that I will be maintaining for public use. I have tested it on my own setup and it works perfectly! Please report an issue if something doesn't work, I'll try my best to fix it.
