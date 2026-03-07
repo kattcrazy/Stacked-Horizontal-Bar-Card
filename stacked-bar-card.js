@@ -321,15 +321,15 @@ class StackedHorizontalBarCard extends LitElement {
     const topBlock = topParts.length ? html`${topParts}` : null;
     const bottomBlock = bottomParts.length ? html`${bottomParts}` : null;
     const barStyle = 'flex:1 1 0;min-height:24px;overflow:hidden';
-    const insetShadow = gradient === 'inset' ? ';box-shadow:inset 0 0 12px 2px rgba(0,0,0,0.25)' : '';
     const barDirection = isVertical ? ';flex-direction:column-reverse' : '';
 
     return html`
       <div class="card-content ${fillCard ? 'no-bg' : ''}">
         <div class="card-inner">
           ${topBlock ? html`<div class="top">${topBlock}</div>` : nothing}
-          <div class="bar-container" style="${barStyle};border-radius:${barRadiusPx}${insetShadow}">
+          <div class="bar-container" style="${barStyle};border-radius:${barRadiusPx}">
             <div class="bar" style="border-radius:${barRadiusPx}${barDirection}">${barEls}</div>
+            ${gradient === 'inset' ? html`<div class="inset-overlay" style="border-radius:${barRadiusPx};background:linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 25%), linear-gradient(to top, rgba(0,0,0,0.25) 0%, transparent 25%), linear-gradient(to right, rgba(0,0,0,0.25) 0%, transparent 25%), linear-gradient(to left, rgba(0,0,0,0.25) 0%, transparent 25%)"></div>` : nothing}
           </div>
           ${bottomBlock ? html`<div class="bottom">${bottomBlock}</div>` : nothing}
         </div>
@@ -411,6 +411,12 @@ class StackedHorizontalBarCard extends LitElement {
       width: 100%;
       overflow: hidden;
       flex-shrink: 0;
+      position: relative;
+    }
+    .inset-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
     }
     .bottom {
       margin-top: 12px;
