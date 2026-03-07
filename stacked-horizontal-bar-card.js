@@ -321,7 +321,7 @@ class StackedHorizontalBarCard extends LitElement {
     const topBlock = topParts.length ? html`${topParts}` : null;
     const bottomBlock = bottomParts.length ? html`${bottomParts}` : null;
     const barStyle = 'flex:1 1 0;min-height:24px;overflow:hidden';
-    const insetShadow = gradient === 'inset' ? ';box-shadow:inset 0 0 25px 4px rgba(255,255,255,0.18)' : '';
+    const insetShadow = gradient === 'inset' ? ';box-shadow:inset 0 0 12px 2px rgba(0,0,0,0.25)' : '';
     const barDirection = isVertical ? ';flex-direction:column-reverse' : '';
 
     return html`
@@ -683,7 +683,7 @@ class StackedHorizontalBarCardEditor extends LitElement {
               @change=${(e) => this._valueChanged('gradient', e.target.value)}
             >
               <option value="none">None</option>
-              <option value="inset">Inset (lighter edges)</option>
+              <option value="inset">Inset (darker edges)</option>
               <option value="left">Left to right</option>
               <option value="right">Right to left</option>
               <option value="center">Center</option>

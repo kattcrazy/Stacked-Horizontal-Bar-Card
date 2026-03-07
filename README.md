@@ -57,7 +57,7 @@ All options support Jinja templates (strings containing `{{ }}`).
 | `sort` | `abc`, `cba`, `highest`, `lowest`, `custom` | `highest` | Segment order (left → right) |
 | `layout` | `horizontal`, `vertical` | `horizontal` | Bar direction; vertical stacks bottom to top |
 | `bar_radius` | number | theme | Bar segment border-radius (px); omit for theme default |
-| `gradient` | `none`, `inset`, `left`, `right`, `center`, `top`, `bottom` | `none` | Gradient direction; `inset` = lighter edges on bar container |
+| `gradient` | `none`, `inset`, `left`, `right`, `center`, `top`, `bottom` | `none` | Gradient direction; `inset` = darker edges on bar container |
 | `fill_card` | boolean | `false` | Remove card background; bar fills grid cell; hides title/legend |
 | `entities` | array | `[]` | Entity list (see below) |
 
