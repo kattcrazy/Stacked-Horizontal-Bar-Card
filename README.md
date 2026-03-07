@@ -7,7 +7,7 @@ A Home Assistant Lovelace card that displays a horizontal stacked bar — like a
 ## Installation
 
 <details>
-<summary style="font-size: 1.5em; font-weight: 600;"><strong>HACS (recommended)</strong></summary>
+<summary style="font-size: 1.75em; font-weight: 600;"><strong>HACS (recommended)</strong></summary>
 
 1. Open HACS
 2. Click the three dots in the top right, then 'Custom repositories'
@@ -18,7 +18,7 @@ A Home Assistant Lovelace card that displays a horizontal stacked bar — like a
 </details>
 
 <details>
-<summary style="font-size: 1.5em; font-weight: 600;"><strong>Manual</strong></summary>
+<summary style="font-size: 1.75em; font-weight: 600;"><strong>Manual</strong></summary>
 
 1. Download `stacked-horizontal-bar-card.js` from the [releases](https://github.com/kattcrazy/Stacked-Horizontal-Bar-Card/releases) page
 2. Place it in your `config/www/` folder
@@ -66,7 +66,7 @@ All options support Jinja templates (strings containing `{{ }}`).
 Entities must have numeric values (from entity state or from a Jinja template in `entity`). Proportions are computed from the sum.
 
 <details>
-<summary style="font-size: 1.5em; font-weight: 600;"><strong>UI config</strong></summary>
+<summary style="font-size: 1.75em; font-weight: 600;"><strong>UI config</strong></summary>
 
 <p><img src="images/Config-1.png" alt="Config 1"></p>
 <p><img src="images/Config-2.png" alt="Config 2"></p>
@@ -111,7 +111,7 @@ entities:
 ![Liquid Ice](images/Liquid-ice.png) ![Light](images/Light.png) ![Dark](images/Dark.png)
 
 <details>
-<summary style="font-size: 1.5em; font-weight: 600;"><strong>Communication Protocols</strong></summary>
+<summary style="font-size: 1.75em; font-weight: 600;"><strong>Communication Protocols</strong></summary>
 
 ```yaml
 type: custom:stacked-horizontal-bar-card
@@ -175,14 +175,14 @@ template:
 </details>
 
 <details>
-<summary style="font-size: 1.5em; font-weight: 600;"><strong>Progress Bar</strong></summary>
+<summary style="font-size: 1.75em; font-weight: 600;"><strong>Progress Bar</strong></summary>
 
 ```yaml
 type: custom:stacked-horizontal-bar-card
 entities:
   - entity: "{{ states('sensor.percent_finished') | float }}" # Your entity here
     name: Completed
-    color: '#2196F3'  
+    color: '#7DD3FC'  
     order: 1
   - entity: "{{ 100 - states('sensor.percent_finished') | float }}" # Your entity here
     name: Remaining
@@ -196,7 +196,7 @@ sort: custom
 </details>
 
 <details>
-<summary style="font-size: 1.5em; font-weight: 600;"><strong>Storage usage</strong></summary>
+<summary style="font-size: 1.75em; font-weight: 600;"><strong>Storage usage</strong></summary>
 
 ```yaml
 type: custom:stacked-horizontal-bar-card
@@ -204,16 +204,16 @@ title:  Storage
 entities:
   - entity: sensor.docker_homeassistant_memory # Your entity here
     name: Home Assistant
-    color: '#03A9F4' 
+    color: "#7DD3FC"
   - entity: sensor.docker_nginx_memory # Your entity here
     name: Nginx
-    color: '#4CAF50'
+    color: "#86EFAC"
   - entity: sensor.docker_mosquitto_memory # Your entity here
     name: Mosquitto 
-    color: '#9C27B0'
+    color: "#D8B4FE"
   - entity: "{{ states('sensor.total_storage') | float - states('sensor.docker_homeassistant_memory') | float - states('sensor.docker_nginx_memory') | float - states('sensor.docker_mosquitto_memory') | float }}" # Your entities here, in the template
     name: Unused 
-    color: '#9E9E9E'
+    color: "#D4D4D4"
 sort: highest
 show_state: bar
 legend_show_zero: false
@@ -222,7 +222,7 @@ legend_show_zero: false
 </details>
 
 <details>
-<summary style="font-size: 1.5em; font-weight: 600;"><strong>CPU usage</strong></summary>
+<summary style="font-size: 1.75em; font-weight: 600;"><strong>CPU usage</strong></summary>
 
 ```yaml
 type: custom:stacked-horizontal-bar-card
@@ -230,13 +230,13 @@ title: CPU Usage
 entities:
   - entity: sensor.docker_homeassistant_cpu # Your entity here
     name: Home Assistant
-    color: '#03A9F4'
+    color: "#7DD3FC"
   - entity: sensor.docker_nginx_cpu  # Your entity here
     name: Nginx
-    color: '#4CAF50'
+    color: "#86EFAC"
   - entity: sensor.docker_mosquitto_cpu # Your entity here
     name: Mosquitto
-    color: '#9C27B0'
+    color: "#D8B4FE"
 sort: highest
 show_state: bar
 legend_show_zero: false

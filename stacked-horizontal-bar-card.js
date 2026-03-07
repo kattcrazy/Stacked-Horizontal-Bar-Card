@@ -18,6 +18,12 @@ function isTemplate(v) {
   return typeof v === 'string' && v.includes('{{') && v.includes('}}');
 }
 
+function isHardcodedNumber(v) {
+  if (v == null) return false;
+  const s = String(v).trim();
+  return s !== '' && !isNaN(Number(s));
+}
+
 function getAtPath(obj, path) {
   const parts = path.split('.');
   let cur = obj;
@@ -181,6 +187,8 @@ class StackedHorizontalBarCard extends LitElement {
       const rawEntity = ent.entity;
       if (isTemplate(rawEntity)) {
         value = parseNumber(this._resolve(`entities.${ent._cfgIdx}.entity`));
+      } else if (isHardcodedNumber(rawEntity)) {
+        value = parseNumber(rawEntity);
       } else {
         const state = rawEntity ? this.hass.states[rawEntity] : null;
         value = state ? parseNumber(state.state) : 0;
@@ -454,12 +462,18 @@ class StackedHorizontalBarCardEditor extends LitElement {
   static properties = {
     hass: { type: Object, attribute: false },
     _config: { type: Object, state: true },
+    _expandedEntities: { type: Object, state: true },
   };
 
   constructor() {
     super();
     this.hass = null;
     this._config = {};
+    this._expandedEntities = {};
+  }
+
+  _toggleEntityExpand(i) {
+    this._expandedEntities = { ...this._expandedEntities, [i]: !this._expandedEntities[i] };
   }
 
   setConfig(config) {
@@ -682,52 +696,81 @@ class StackedHorizontalBarCardEditor extends LitElement {
           <div class="section-header">Entities</div>
           <div class="option-help">Add entities with numeric state. Values are shown as proportions. Any option (including entity, name, color) accepts Jinja templates.</div>
           ${entities.map(
-            (ent, i) => html`
+            (ent, i) => {
+              const expanded = this._expandedEntities[i];
+              return html`
               <div class="entity-row">
                 <div class="entity-fields">
+                  <div class="entity-primary-row">
+                    <div class="entity-input-wrap">
+                      ${expanded
+                        ? html`
+                            <textarea
+                              class="input entity-input entity-textarea"
+                              .value=${ent.entity || ''}
+                              placeholder="Entity ID or Jinja template"
+                              rows="4"
+                              @input=${(e) => this._entityChanged(i, 'entity', e.target.value)}
+                            ></textarea>
+                          `
+                        : html`
+                            <input
+                              type="text"
+                              class="input entity-input"
+                              .value=${ent.entity || ''}
+                              list="entity-list-${i}"
+                              placeholder="Entity ID or Jinja template"
+                              @input=${(e) => this._entityChanged(i, 'entity', e.target.value)}
+                            />
+                            <datalist id="entity-list-${i}">
+                              ${entityOptions.map((eid) => html`<option value="${eid}">`)}
+                            </datalist>
+                          `}
+                    </div>
+                    <button
+                      class="expand-btn"
+                      type="button"
+                      @click=${() => this._toggleEntityExpand(i)}
+                      title=${expanded ? 'Collapse' : 'Expand for template'}
+                    >
+                      <ha-icon icon=${expanded ? 'mdi:chevron-up' : 'mdi:chevron-down'}></ha-icon>
+                    </button>
+                  </div>
                   <input
                     type="text"
-                    class="input entity-input"
-                    .value=${ent.entity || ''}
-                    list="entity-list-${i}"
-                    placeholder="Entity ID or Jinja template"
-                    @input=${(e) => this._entityChanged(i, 'entity', e.target.value)}
-                  />
-                  <datalist id="entity-list-${i}">
-                    ${entityOptions.map((eid) => html`<option value="${eid}">`)}
-                  </datalist>
-                  <input
-                    type="text"
-                    class="input"
+                    class="input entity-name-input"
                     .value=${ent.name ?? ''}
                     placeholder="Name override"
                     @input=${(e) => this._entityChanged(i, 'name', e.target.value || undefined)}
                   />
-                  <input
-                    type="text"
-                    class="input color-input"
-                    .value=${ent.color ?? ''}
-                    placeholder="Color (hex or var; Jinja supported)"
-                    @input=${(e) => this._entityChanged(i, 'color', e.target.value || undefined)}
-                  />
-                  ${(c.sort || 'highest') === 'custom'
-                    ? html`
-                        <input
-                          type="number"
-                          class="input order-input"
-                          .value=${ent.order ?? i}
-                          placeholder="Order"
-                          min="0"
-                          @input=${(e) => this._entityChanged(i, 'order', parseInt(e.target.value))}
-                        />
-                      `
-                    : nothing}
+                  <div class="entity-options-row">
+                    <input
+                      type="text"
+                      class="input color-input"
+                      .value=${ent.color ?? ''}
+                      placeholder="Color (hex or var)"
+                      @input=${(e) => this._entityChanged(i, 'color', e.target.value || undefined)}
+                    />
+                    ${(c.sort || 'highest') === 'custom'
+                      ? html`
+                          <input
+                            type="number"
+                            class="input order-input"
+                            .value=${ent.order ?? i}
+                            placeholder="Order"
+                            min="0"
+                            @input=${(e) => this._entityChanged(i, 'order', parseInt(e.target.value))}
+                          />
+                        `
+                      : nothing}
+                  </div>
                 </div>
                 <button class="remove-btn" @click=${() => this._removeEntity(i)} title="Remove">
                   <ha-icon icon="mdi:delete"></ha-icon>
                 </button>
               </div>
-            `
+            `;
+            }
           )}
           <button class="add-btn" @click=${this._addEntity}>
             <ha-icon icon="mdi:plus"></ha-icon> Add entity
@@ -831,32 +874,62 @@ class StackedHorizontalBarCardEditor extends LitElement {
     .entity-fields {
       flex: 1;
       display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+    }
+    .entity-primary-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      width: 100%;
+    }
+    .entity-input-wrap {
+      flex: 1;
+      min-width: 0;
+    }
+    .entity-input-wrap .entity-input {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .entity-input-wrap .entity-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .entity-name-input {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .entity-options-row {
+      display: flex;
       flex-wrap: wrap;
       gap: 8px;
       align-items: center;
     }
-    .entity-fields .input,
-    .entity-fields .entity-input {
-      flex: 1;
-      min-width: 120px;
-    }
-    .entity-fields .entity-input {
-      min-width: 180px;
-    }
-    .entity-fields .color-input {
+    .entity-options-row .color-input {
       min-width: 100px;
       max-width: 140px;
-    }
-    .entity-fields .template-input {
-      min-width: 180px;
       flex: 1;
     }
-    .entity-fields .order-input {
+    .entity-options-row .order-input {
       width: 60px;
       min-width: 60px;
     }
-    .entity-fields .full {
-      min-width: 180px;
+    .expand-btn {
+      padding: 8px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--secondary-text-color);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .expand-btn:hover {
+      color: var(--primary-color);
+      background: rgba(var(--rgb-primary-color), 0.1);
     }
     .checkbox-label {
       display: flex;
