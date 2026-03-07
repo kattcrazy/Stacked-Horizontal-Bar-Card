@@ -630,7 +630,7 @@ class StackedHorizontalBarCardEditor extends LitElement {
                 .checked=${c.legend_show_zero !== false}
                 @change=${(e) => this._valueChanged('legend_show_zero', e.target.checked)}
               />
-              Show zero in legend
+              Show entities with state of 0 in legend
             </label>
           </div>
           <div class="option-row">
@@ -683,7 +683,7 @@ class StackedHorizontalBarCardEditor extends LitElement {
               @change=${(e) => this._valueChanged('gradient', e.target.value)}
             >
               <option value="none">None</option>
-              <option value="inset">Inset (darker edges)</option>
+              <option value="inset">Inset</option>
               <option value="left">Left to right</option>
               <option value="right">Right to left</option>
               <option value="center">Center</option>
@@ -725,7 +725,7 @@ class StackedHorizontalBarCardEditor extends LitElement {
             (ent, i) => {
               const expanded = this._expandedEntities[i] ?? isTemplate(ent.entity);
               const entityLines = (ent.entity || '').split('\n').length;
-              const textareaRows = Math.max(4, entityLines + 1);
+              const textareaRows = Math.max(6, entityLines + 1);
               const colorVal = ent.color ?? '';
               const showColorSwatch = colorVal && /^#[0-9A-Fa-f]{3,8}$/.test(colorVal.trim());
               return html`
@@ -858,6 +858,7 @@ class StackedHorizontalBarCardEditor extends LitElement {
       min-width: 20px;
       min-height: 20px;
       cursor: pointer;
+      border-radius: var(--ha-card-border-radius, 12px);
     }
     .option-help {
       font-size: 12px;
