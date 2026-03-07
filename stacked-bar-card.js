@@ -329,7 +329,7 @@ class StackedHorizontalBarCard extends LitElement {
           ${topBlock ? html`<div class="top">${topBlock}</div>` : nothing}
           <div class="bar-container" style="${barStyle};border-radius:${barRadiusPx}">
             <div class="bar" style="border-radius:${barRadiusPx}${barDirection}">${barEls}</div>
-            ${gradient === 'inset' ? html`<div class="inset-overlay" style="border-radius:${barRadiusPx};background:linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 25%), linear-gradient(to top, rgba(0,0,0,0.25) 0%, transparent 25%), linear-gradient(to right, rgba(0,0,0,0.25) 0%, transparent 25%), linear-gradient(to left, rgba(0,0,0,0.25) 0%, transparent 25%)"></div>` : nothing}
+            ${gradient === 'inset' ? html`<div class="inset-overlay" style="border-radius:${barRadiusPx};background:linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 25%), linear-gradient(to top, rgba(0,0,0,0.25) 0%, transparent 25%), linear-gradient(to right, rgba(0,0,0,0.25) 0%, transparent 25%), linear-gradient(to left, rgba(0,0,0,0.25) 0%, transparent 25%)"></div>` : gradient === 'bevel' ? html`<div class="inset-overlay" style="border-radius:${barRadiusPx};background:linear-gradient(to bottom, rgba(255,255,255,0.25) 0%, transparent 25%), linear-gradient(to top, rgba(255,255,255,0.25) 0%, transparent 25%), linear-gradient(to right, rgba(255,255,255,0.25) 0%, transparent 25%), linear-gradient(to left, rgba(255,255,255,0.25) 0%, transparent 25%)"></div>` : nothing}
           </div>
           ${bottomBlock ? html`<div class="bottom">${bottomBlock}</div>` : nothing}
         </div>
@@ -690,6 +690,7 @@ class StackedHorizontalBarCardEditor extends LitElement {
             >
               <option value="none">None</option>
               <option value="inset">Inset</option>
+              <option value="bevel">Bevel</option>
               <option value="left">Left to right</option>
               <option value="right">Right to left</option>
               <option value="center">Center</option>
