@@ -1,7 +1,7 @@
-// Stacked Horizontal Bar Card - A horizontal stacked bar (pie-chart-as-a-line) for Home Assistant
-// Repository: https://github.com/kattcrazy/Stacked-Horizontal-Bar-Card
+// Stacked Bar Card - A stacked bar (horizontal or vertical) for Home Assistant
+// Repository: https://github.com/kattcrazy/Stacked-Bar-Card
 // Add type="module" to your resource:
-//   - url: /local/stacked-horizontal-bar-card.js
+//   - url: /local/stacked-bar-card.js
 //     type: module
 //
 import { html, css, LitElement, nothing } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/core/lit-core.min.js';
@@ -67,12 +67,12 @@ class StackedHorizontalBarCard extends LitElement {
   }
 
   static getConfigElement() {
-    return document.createElement('stacked-horizontal-bar-card-editor');
+    return document.createElement('stacked-bar-card-editor');
   }
 
   static getStubConfig() {
     return {
-      type: 'custom:stacked-horizontal-bar-card',
+      type: 'custom:stacked-bar-card',
       entities: [],
       sort: 'highest',
       show_title: true,
@@ -467,7 +467,7 @@ class StackedHorizontalBarCard extends LitElement {
   `;
 }
 
-customElements.define('stacked-horizontal-bar-card', StackedHorizontalBarCard);
+customElements.define('stacked-bar-card', StackedHorizontalBarCard);
 
 // Editor
 class StackedHorizontalBarCardEditor extends LitElement {
@@ -1022,4 +1022,4 @@ class StackedHorizontalBarCardEditor extends LitElement {
   `;
 }
 
-customElements.define('stacked-horizontal-bar-card-editor', StackedHorizontalBarCardEditor);
+customElements.define('stacked-bar-card-editor', StackedHorizontalBarCardEditor);

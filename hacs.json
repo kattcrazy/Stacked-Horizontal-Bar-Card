@@ -1,7 +1,7 @@
 {
-  "name": "Stacked Horizontal Bar Card",
+  "name": "Stacked Bar Card",
   "render_readme": true,
-  "filename": "stacked-horizontal-bar-card.js",
+  "filename": "stacked-bar-card.js",
   "content_in_root": true,
   "homeassistant": "2023.11.0"
 }

@@ -1,6 +1,6 @@
-# Stacked Horizontal Bar Card
+# Stacked Bar Card
 
-A horizontal bar-card where each segment represents an entity's numeric value with configurable colors, gradients, and ordering.
+A stacked bar card (horizontal or vertical) where each segment represents an entity's numeric value with configurable colors, gradients, and ordering.
 
 Possible use-cases include storage usage, progress and timer bars, cpu usage, or just a pie chart that fits better into a grid themed dashboard.
 
@@ -15,8 +15,8 @@ Possible use-cases include storage usage, progress and timer bars, cpu usage, or
 
 1. Open HACS
 2. Click the three dots in the top right, then 'Custom repositories'
-3. Paste `https://github.com/kattcrazy/Stacked-Horizontal-Bar-Card` and select "Dashboard"
-4. Search for 'Stacked Horizontal Bar Card' in HACS and download
+3. Paste `https://github.com/kattcrazy/Stacked-Bar-Card` and select "Dashboard"
+4. Search for 'Stacked Bar Card' in HACS and download
 5. Reload your page!
 
 </details>
@@ -26,12 +26,12 @@ Possible use-cases include storage usage, progress and timer bars, cpu usage, or
 <details>
 <summary>See instructions</summary>
 
-1. Download `stacked-horizontal-bar-card.js` from the [releases](https://github.com/kattcrazy/Stacked-Horizontal-Bar-Card/releases) page
+1. Download `stacked-bar-card.js` from the [releases](https://github.com/kattcrazy/Stacked-Bar-Card/releases) page
 2. Place it in your `config/www/` folder
 3. Add the resource in the Lovelace config:
 ```yaml
 resources:
-  - url: /local/stacked-horizontal-bar-card.js
+  - url: /local/stacked-bar-card.js
     type: module
 ```
 4. Refresh your dashboard or Home Assistant if needed
@@ -79,7 +79,7 @@ For your copy-paste convenience!
 
 
 ```yaml
-type: custom:stacked-horizontal-bar-card
+type: custom:stacked-bar-card
 
 alignment: left/center/right
 show_title: true/false
@@ -114,7 +114,7 @@ entities:
 ![Protocols](images/Protocols.png)
 
 ```yaml
-type: custom:stacked-horizontal-bar-card
+type: custom:stacked-bar-card
 show_legend: true
 show_state: legend
 sort: highest
@@ -179,7 +179,7 @@ template:
 ![Progress bar](images/Progress_bar.png)
 
 ```yaml
-type: custom:stacked-horizontal-bar-card
+type: custom:stacked-bar-card
 entities:
   - entity: "{{ states('sensor.percent_finished') | float }}" # Your entity here
     name: Completed
@@ -199,7 +199,7 @@ sort: custom
 ![Storage](images/Storage.png)
 
 ```yaml
-type: custom:stacked-horizontal-bar-card
+type: custom:stacked-bar-card
 title:  Storage
 entities:
   - entity: sensor.docker_homeassistant_memory # Your entity here
@@ -228,7 +228,7 @@ legend_show_zero: false
 ![CPU](images/CPU.png)
 
 ```yaml
-type: custom:stacked-horizontal-bar-card
+type: custom:stacked-bar-card
 title: CPU Usage
 entities:
   - entity: sensor.docker_homeassistant_cpu # Your entity here
