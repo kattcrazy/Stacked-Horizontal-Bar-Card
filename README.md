@@ -111,246 +111,39 @@ entities:
 ![Liquid Ice](images/Liquid-ice.png) ![Light](images/Light.png) ![Dark](images/Dark.png)
 
 <details>
-<summary><strong>1</strong></summary>
-
-```yaml
-type: custom:stacked-horizontal-bar-card
-show_legend: false
-show_state: none
-sort: highest
-bar_height: 90
-bar_radius: 8
-entities:
-  - entity: sensor.wifi_devices
-    name: Wifi
-    gradient: true
-    color: "#7CD5FD"
-  - entity: sensor.local_devices
-    name: Local
-    gradient: true
-    color: "#A2D7A4"
-  - entity: sensor.z2mqtt_devices
-    gradient: true
-    color: "#FFDE7A"
-    name: Z2MQTT
-  - entity: sensor.unlabelled_devices
-    gradient: true
-    color: "#BCBCBC"
-    name: Unlabelled
-legend_position: bottom
-title_position: top
-grid_options:
-  columns: 12
-  rows: 2
-remove_background: false
-gradient: none
-```
-
-</details>
-
-<details>
-<summary><strong>2</strong></summary>
-
-```yaml
-type: custom:stacked-horizontal-bar-card
-show_legend: true
-show_state: none
-sort: abc
-bar_height: 24
-entities:
-  - entity: sensor.wifi_devices
-    name: Wifi
-    gradient: true
-    color: "#7CD5FD"
-  - entity: sensor.local_devices
-    name: Local
-    gradient: true
-    color: "#A2D7A4"
-  - entity: sensor.z2mqtt_devices
-    gradient: true
-    color: "#FFDE7A"
-    name: Z2MQTT
-  - entity: sensor.unlabelled_devices
-    gradient: true
-    color: "#BCBCBC"
-    name: Unlabelled
-legend_position: top
-title_position: bottom
-gradient: right
-title: Protocols
-grid_options:
-  columns: 12
-  rows: auto
-fill_card: false
-show_title: true
-```
-
-</details>
-
-<details>
-<summary><strong>3</strong></summary>
-
-```yaml
-type: custom:stacked-horizontal-bar-card
-show_legend: true
-show_state: bar
-sort: custom
-bar_height: auto
-entities:
-  - entity: sensor.wifi_devices
-    name: Wifi
-    gradient: true
-    color: "#7CD5FD"
-    order: 1
-  - entity: sensor.local_devices
-    name: Local
-    gradient: true
-    color: "#A2D7A4"
-    order: 2
-  - entity: sensor.z2mqtt_devices
-    gradient: true
-    color: "#FFDE7A"
-    name: Z2MQTT
-    order: 3
-  - entity: sensor.unlabelled_devices
-    gradient: true
-    color: "#BCBCBC"
-    name: Unlabelled
-    order: 4
-legend_position: bottom
-title_position: bottom
-gradient: top
-title: Protocols
-grid_options:
-  columns: 12
-  rows: 2
-fill_card: false
-show_title: true
-alignment: right
-bar_radius: 0
-```
-
-</details>
-
-<details>
-<summary><strong>4</strong></summary>
+<summary><strong>Communication Protocols</strong></summary>
 
 ```yaml
 type: custom:stacked-horizontal-bar-card
 show_legend: true
 show_state: legend
-sort: cba
+sort: highest
 bar_height: auto
 entities:
   - entity: sensor.wifi_devices
     name: Wifi
     gradient: true
     color: "#7CD5FD"
-    order: 1
   - entity: sensor.local_devices
     name: Local
     gradient: true
     color: "#A2D7A4"
-    order: 2
   - entity: sensor.z2mqtt_devices
     gradient: true
     color: "#FFDE7A"
     name: Z2MQTT
-    order: 3
-  - entity: sensor.unlabelled_devices
-    gradient: true
-    color: "#BCBCBC"
-    name: Unlabelled
-    order: 4
 legend_position: top
-title_position: bottom
-gradient: top
+title_position: top
+gradient: bottom
 title: Protocols
 grid_options:
   columns: 12
-  rows: 2
+  rows: 2.5
 fill_card: false
-show_title: false
+show_title: true
 alignment: center
-bar_radius: 100
-```
+bar_radius: 13
 
-</details>
-
-<details>
-<summary><strong>5</strong></summary>
-
-```yaml
-type: custom:stacked-horizontal-bar-card
-show_legend: false
-show_state: none
-sort: cba
-bar_height: auto
-entities:
-  - entity: sensor.wifi_devices
-    name: Wifi
-    gradient: true
-    color: "#7CD5FD"
-  - entity: sensor.local_devices
-    name: Local
-    gradient: true
-    color: "#A2D7A4"
-  - entity: sensor.z2mqtt_devices
-    gradient: true
-    color: "#FFDE7A"
-    name: Z2MQTT
-  - entity: sensor.unlabelled_devices
-    gradient: true
-    color: "#BCBCBC"
-    name: Unlabelled
-legend_position: bottom
-title_position: top
-grid_options:
-  columns: 12
-  rows: 4
-gradient: none
-alignment: center
-fill_card: true
-bar_radius: 0
-```
-
-</details>
-
-<details>
-<summary><strong>6</strong></summary>
-
-```yaml
-type: custom:stacked-horizontal-bar-card
-show_legend: true
-show_state: bar
-sort: lowest
-bar_height: auto
-entities:
-  - entity: sensor.wifi_devices
-    name: Wifi
-    gradient: true
-    color: "#7CD5FD"
-  - entity: sensor.local_devices
-    name: Local
-    gradient: true
-    color: "#A2D7A4"
-  - entity: sensor.z2mqtt_devices
-    gradient: true
-    color: "#FFDE7A"
-    name: Z2MQTT
-  - entity: sensor.unlabelled_devices
-    gradient: true
-    color: "#BCBCBC"
-    name: Unlabelled
-legend_position: bottom
-title_position: top
-grid_options:
-  columns: 12
-  rows: 4
-gradient: left
-alignment: center
-fill_card: false
-title: Protocols
 ```
 
 </details>
