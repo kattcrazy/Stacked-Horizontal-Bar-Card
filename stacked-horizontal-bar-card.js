@@ -250,11 +250,15 @@ class StackedHorizontalBarCard extends LitElement {
 
     const barRadiusPx = typeof barRadius === 'number' ? `${barRadius}px` : String(barRadius);
     const gradient = this._resolve('gradient') || 'none';
+    const layout = this._resolve('layout') || 'horizontal';
+    const isVertical = layout === 'vertical';
     const barEls = segments.map((seg, i) => {
       const pct = (seg.value / total) * 100;
       const isFirst = i === 0;
       const isLast = i === segments.length - 1;
-      const radius = `${isFirst ? barRadiusPx : 0} ${isLast ? barRadiusPx : 0} ${isLast ? barRadiusPx : 0} ${isFirst ? barRadiusPx : 0}`;
+      const radius = isVertical
+        ? `${isLast ? barRadiusPx : 0} ${isLast ? barRadiusPx : 0} ${isFirst ? barRadiusPx : 0} ${isFirst ? barRadiusPx : 0}`
+        : `${isFirst ? barRadiusPx : 0} ${isLast ? barRadiusPx : 0} ${isLast ? barRadiusPx : 0} ${isFirst ? barRadiusPx : 0}`;
       let bg = seg.color;
       const light = lightenColor(seg.color);
       if (gradient === 'left') bg = `linear-gradient(90deg, ${seg.color}, ${light})`;
@@ -262,10 +266,11 @@ class StackedHorizontalBarCard extends LitElement {
       else if (gradient === 'center') bg = `linear-gradient(90deg, ${light}, ${seg.color}, ${light})`;
       else if (gradient === 'top') bg = `linear-gradient(180deg, ${seg.color}, ${light})`;
       else if (gradient === 'bottom') bg = `linear-gradient(0deg, ${seg.color}, ${light})`;
+      const sizeProp = isVertical ? 'height' : 'width';
       return html`
         <div
           class="segment"
-          style="width:${pct}%;background:${bg};border-radius:${radius}"
+          style="${sizeProp}:${pct}%;background:${bg};border-radius:${radius}"
           title="${seg.name}: ${seg.value}"
         >
           ${showOnBar && pct > 8 ? html`<span class="segment-value">${seg.value}</span>` : nothing}
@@ -317,13 +322,14 @@ class StackedHorizontalBarCard extends LitElement {
     const bottomBlock = bottomParts.length ? html`${bottomParts}` : null;
     const barStyle = 'flex:1 1 0;min-height:24px;overflow:hidden';
     const insetShadow = gradient === 'inset' ? ';box-shadow:inset 0 0 25px 4px rgba(255,255,255,0.18)' : '';
+    const barDirection = isVertical ? ';flex-direction:column-reverse' : '';
 
     return html`
       <div class="card-content ${fillCard ? 'no-bg' : ''}">
         <div class="card-inner">
           ${topBlock ? html`<div class="top">${topBlock}</div>` : nothing}
           <div class="bar-container" style="${barStyle};border-radius:${barRadiusPx}${insetShadow}">
-            <div class="bar" style="border-radius:${barRadiusPx}">${barEls}</div>
+            <div class="bar" style="border-radius:${barRadiusPx}${barDirection}">${barEls}</div>
           </div>
           ${bottomBlock ? html`<div class="bottom">${bottomBlock}</div>` : nothing}
         </div>
@@ -422,7 +428,8 @@ class StackedHorizontalBarCard extends LitElement {
       align-items: center;
       justify-content: center;
       min-width: 0;
-      transition: width 0.3s ease;
+      min-height: 0;
+      transition: width 0.3s ease, height 0.3s ease;
     }
     .segment-value {
       font-size: var(--ha-font-size-m);
@@ -643,6 +650,17 @@ class StackedHorizontalBarCardEditor extends LitElement {
 
         <div class="section">
           <div class="section-header">Bar</div>
+          <div class="option-row">
+            <label class="option-label">Layout</label>
+            <select
+              class="select"
+              .value=${c.layout ?? 'horizontal'}
+              @change=${(e) => this._valueChanged('layout', e.target.value)}
+            >
+              <option value="horizontal">Horizontal</option>
+              <option value="vertical">Vertical</option>
+            </select>
+          </div>
           <div class="option-row">
             <label class="option-label">
               <input

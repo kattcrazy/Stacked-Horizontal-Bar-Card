@@ -55,6 +55,7 @@ All options support Jinja templates (strings containing `{{ }}`).
 | `legend_position` | `top`, `bottom` | `bottom` | Legend placement |
 | `show_state` | `bar`, `legend`, `both`, `none` | `legend` | Where to show entity values |
 | `sort` | `abc`, `cba`, `highest`, `lowest`, `custom` | `highest` | Segment order (left → right) |
+| `layout` | `horizontal`, `vertical` | `horizontal` | Bar direction; vertical stacks bottom to top |
 | `bar_radius` | number | theme | Bar segment border-radius (px); omit for theme default |
 | `gradient` | `none`, `inset`, `left`, `right`, `center`, `top`, `bottom` | `none` | Gradient direction; `inset` = lighter edges on bar container |
 | `fill_card` | boolean | `false` | Remove card background; bar fills grid cell; hides title/legend |
@@ -64,29 +65,18 @@ All options support Jinja templates (strings containing `{{ }}`).
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `entity` | string | required | Entity ID (e.g. `sensor.battery_level`) or Jinja template (e.g. `"{{states('sensor.battery_level')}}) |
+| `entity` | string | required | Entity ID, Jinja template, or hardcoded number |
 | `name` | string | — | Override name; omit to use friendly name. Supports Jinja. |
 | `color` | string | auto | Hex (e.g. `#FF0000`) or HA variable. Supports Jinja. |
 | `order` | number | — | Used when `sort: custom`. Supports Jinja. |
 
 Entities must have numeric values (from entity state or from a Jinja template in `entity`). Proportions are computed from the sum.
 
-### UI config
 
-<details>
-<summary>See screenshots</summary>
-
-<p><img src="images/Config-1.png" alt="Config 1"></p>
-<p><img src="images/Config-2.png" alt="Config 2"></p>
-
-</details>
-
-### Full config with all options
+### Full config & options
 
 For your copy-paste convenience!
 
-<details>
-<summary>See YAML</summary>
 
 ```yaml
 type: custom:stacked-horizontal-bar-card
@@ -103,6 +93,7 @@ legend_position: top/bottom
 show_state: legend/bar/both/none
 
 sort: abc/cba/highest/lowest/custom
+layout: horizontal/vertical
 
 bar_radius: 8                # omit for theme default
 gradient: none/inset/left/right/center/top/bottom
@@ -113,13 +104,10 @@ entities:
     name: Grid
     color: '#4472C4'
     order: 1 # If using sort: custom
- 
-
 ```
 
-</details>
 
-## Config Examples
+## Examples
 
 ### Communication Protocols
 
