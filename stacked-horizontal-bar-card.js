@@ -412,8 +412,8 @@ class StackedHorizontalBarCard extends LitElement {
       transition: width 0.3s ease;
     }
     .segment-value {
-      font-size: 12px;
-      font-weight: 500;
+      font-size: var(--ha-font-size-m);
+      font-weight: var(--ha-font-weight-body);
       color: rgba(0, 0, 0, 0.7);
       text-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
       white-space: nowrap;
