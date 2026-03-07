@@ -1,6 +1,8 @@
 # Stacked Horizontal Bar Card
 
-A Home Assistant Lovelace card that displays a horizontal stacked bar — like a pie chart in a line. Each segment represents an entity's numeric value with configurable colors, gradients, and ordering.
+A horizontal bar-card where each segment represents an entity's numeric value with configurable colors, gradients, and ordering.
+
+Possible use-cases include storage usage, progress and timer bars, cpu usage, or just a pie chart that fits better into a grid themed dashboard.
 
 ![Header](images/Headerv2.png)
 
@@ -110,7 +112,7 @@ entities:
   - entity: sensor.grid_usage  # Or use Jinja templating
     name: Grid
     color: '#4472C4'
-    order: 1
+    order: 1 # If using sort: custom
  
 
 ```
@@ -119,12 +121,7 @@ entities:
 
 ## Config Examples
 
-![Liquid Ice](images/Liquid-ice.png) ![Light](images/Light.png) ![Dark](images/Dark.png)
-
 ### Communication Protocols
-
-<details>
-<summary>See YAML</summary>
 
 ![Protocols](images/Protocols.png)
 
@@ -158,6 +155,9 @@ bar_radius: 13
 
 ```
 
+<details>
+<summary>How I got those sensors</summary>
+
 Here's the configuration code used to get the sensors in the example above. It uses the labels assigned to devices.
 
 ```yaml
@@ -188,9 +188,6 @@ template:
 
 ### Progress Bar
 
-<details>
-<summary>See YAML</summary>
-
 ![Progress bar](images/Progress_bar.png)
 
 ```yaml
@@ -209,12 +206,7 @@ show_state: none
 sort: custom
 ```
 
-</details>
-
 ### Storage usage
-
-<details>
-<summary>See YAML</summary>
 
 ![Storage](images/Storage.png)
 
@@ -239,12 +231,7 @@ show_state: bar
 legend_show_zero: false
 ```
 
-</details>
-
 ### CPU usage
-
-<details>
-<summary>See YAML</summary>
 
 ![CPU](images/CPU.png)
 
@@ -265,9 +252,6 @@ sort: highest
 show_state: bar
 legend_show_zero: false
 ```
-
-</details>
-
 
 ## About
 This is my first Home Assistant card that I will be maintaining for public use. I have tested it on my own setup and it works perfectly! Please report an issue if something doesn't work, I'll try my best to fix it.
