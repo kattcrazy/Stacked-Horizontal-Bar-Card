@@ -263,7 +263,6 @@ class StackedHorizontalBarCard extends LitElement {
       const light = lightenColor(seg.color);
       if (gradient === 'left') bg = `linear-gradient(90deg, ${seg.color}, ${light})`;
       else if (gradient === 'right') bg = `linear-gradient(90deg, ${light}, ${seg.color})`;
-      else if (gradient === 'center') bg = `linear-gradient(90deg, ${light}, ${seg.color}, ${light})`;
       else if (gradient === 'top') bg = `linear-gradient(180deg, ${seg.color}, ${light})`;
       else if (gradient === 'bottom') bg = `linear-gradient(0deg, ${seg.color}, ${light})`;
       const sizeProp = isVertical ? 'height' : 'width';
@@ -287,7 +286,6 @@ class StackedHorizontalBarCard extends LitElement {
                 const light = lightenColor(seg.color);
                 if (gradient === 'left') swatchBg = `linear-gradient(90deg, ${seg.color}, ${light})`;
                 else if (gradient === 'right') swatchBg = `linear-gradient(90deg, ${light}, ${seg.color})`;
-                else if (gradient === 'center') swatchBg = `linear-gradient(90deg, ${light}, ${seg.color}, ${light})`;
                 else if (gradient === 'top') swatchBg = `linear-gradient(180deg, ${seg.color}, ${light})`;
                 else if (gradient === 'bottom') swatchBg = `linear-gradient(0deg, ${seg.color}, ${light})`;
                 return html`
@@ -329,7 +327,7 @@ class StackedHorizontalBarCard extends LitElement {
           ${topBlock ? html`<div class="top">${topBlock}</div>` : nothing}
           <div class="bar-container" style="${barStyle};border-radius:${barRadiusPx}">
             <div class="bar" style="border-radius:${barRadiusPx}${barDirection}">${barEls}</div>
-            ${gradient === 'inset' ? html`<div class="inset-overlay" style="border-radius:${barRadiusPx};background:linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 25%), linear-gradient(to top, rgba(0,0,0,0.25) 0%, transparent 25%), linear-gradient(to right, rgba(0,0,0,0.25) 0%, transparent 25%), linear-gradient(to left, rgba(0,0,0,0.25) 0%, transparent 25%)"></div>` : gradient === 'bevel' ? html`<div class="inset-overlay" style="border-radius:${barRadiusPx};background:linear-gradient(to bottom, rgba(255,255,255,0.25) 0%, transparent 25%), linear-gradient(to top, rgba(255,255,255,0.25) 0%, transparent 25%), linear-gradient(to right, rgba(255,255,255,0.25) 0%, transparent 25%), linear-gradient(to left, rgba(255,255,255,0.25) 0%, transparent 25%)"></div>` : nothing}
+            ${gradient === 'inset' ? html`<div class="inset-overlay" style="border-radius:${barRadiusPx};background:linear-gradient(to bottom, rgba(0,0,0,0.12) 0%, transparent 40%), linear-gradient(to top, rgba(0,0,0,0.12) 0%, transparent 40%), linear-gradient(to right, rgba(0,0,0,0.12) 0%, transparent 40%), linear-gradient(to left, rgba(0,0,0,0.12) 0%, transparent 40%)"></div>` : gradient === 'bevel' ? html`<div class="inset-overlay" style="border-radius:${barRadiusPx};background:linear-gradient(to bottom, rgba(255,255,255,0.12) 0%, transparent 40%), linear-gradient(to top, rgba(255,255,255,0.12) 0%, transparent 40%), linear-gradient(to right, rgba(255,255,255,0.12) 0%, transparent 40%), linear-gradient(to left, rgba(255,255,255,0.12) 0%, transparent 40%)"></div>` : nothing}
           </div>
           ${bottomBlock ? html`<div class="bottom">${bottomBlock}</div>` : nothing}
         </div>
@@ -556,20 +554,30 @@ class StackedHorizontalBarCardEditor extends LitElement {
     const entities = c.entities || [];
     const entityOptions = this._getEntityOptions();
 
+    const fillCard = !!(c.fill_card || c.remove_background);
+    const showTitle = c.show_title !== false;
+    const showLegend = c.show_legend !== false;
+
     return html`
       <div class="editor">
+        ${!fillCard ? html`
         <div class="section">
           <div class="section-header">Title</div>
-          <div class="option-row">
-            <label class="option-label">
-              <input
-                type="checkbox"
-                .checked=${c.show_title !== false}
-                @change=${(e) => this._valueChanged('show_title', e.target.checked)}
-              />
-              Show title
+          <div class="option-row option-row-toggle">
+            <label class="toggle-row">
+              <span class="toggle-label">Show title</span>
+              <span class="toggle-switch">
+                <input
+                  type="checkbox"
+                  class="toggle-input"
+                  .checked=${showTitle}
+                  @change=${(e) => this._valueChanged('show_title', e.target.checked)}
+                />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </span>
             </label>
           </div>
+          ${showTitle ? html`
           <div class="option-row">
             <label class="option-label">Title</label>
             <input
@@ -591,31 +599,38 @@ class StackedHorizontalBarCardEditor extends LitElement {
               <option value="bottom">Bottom</option>
             </select>
           </div>
-          <div class="option-row">
-            <label class="option-label">Alignment</label>
-            <select
-              class="select"
-              .value=${c.alignment ?? c.title_alignment ?? c.legend_alignment ?? 'left'}
-              @change=${(e) => this._valueChanged('alignment', e.target.value)}
-            >
-              <option value="left">Left</option>
-              <option value="center">Center</option>
-              <option value="right">Right</option>
-            </select>
-          </div>
-          <div class="option-help">Alignment applies to both title and legend</div>
+          ` : nothing}
         </div>
 
         <div class="section">
           <div class="section-header">Legend</div>
-          <div class="option-row">
-            <label class="option-label">
-              <input
-                type="checkbox"
-                .checked=${c.show_legend !== false}
-                @change=${(e) => this._valueChanged('show_legend', e.target.checked)}
-              />
-              Show legend
+          <div class="option-row option-row-toggle">
+            <label class="toggle-row">
+              <span class="toggle-label">Show legend</span>
+              <span class="toggle-switch">
+                <input
+                  type="checkbox"
+                  class="toggle-input"
+                  .checked=${showLegend}
+                  @change=${(e) => this._valueChanged('show_legend', e.target.checked)}
+                />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </span>
+            </label>
+          </div>
+          ${showLegend ? html`
+          <div class="option-row option-row-toggle">
+            <label class="toggle-row">
+              <span class="toggle-label">Show entities with state of 0 in legend</span>
+              <span class="toggle-switch">
+                <input
+                  type="checkbox"
+                  class="toggle-input"
+                  .checked=${c.legend_show_zero !== false}
+                  @change=${(e) => this._valueChanged('legend_show_zero', e.target.checked)}
+                />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </span>
             </label>
           </div>
           <div class="option-row">
@@ -630,16 +645,6 @@ class StackedHorizontalBarCardEditor extends LitElement {
             </select>
           </div>
           <div class="option-row">
-            <label class="option-label">
-              <input
-                type="checkbox"
-                .checked=${c.legend_show_zero !== false}
-                @change=${(e) => this._valueChanged('legend_show_zero', e.target.checked)}
-              />
-              Show entities with state of 0 in legend
-            </label>
-          </div>
-          <div class="option-row">
             <label class="option-label">Show state</label>
             <select
               class="select"
@@ -652,35 +657,22 @@ class StackedHorizontalBarCardEditor extends LitElement {
               <option value="none">Neither</option>
             </select>
           </div>
+          ` : nothing}
         </div>
+        ` : nothing}
 
         <div class="section">
           <div class="section-header">Bar</div>
           <div class="option-row">
-            <label class="option-label">Layout</label>
-            <select
-              class="select"
-              .value=${c.layout ?? 'horizontal'}
-              @change=${(e) => this._valueChanged('layout', e.target.value)}
-            >
-              <option value="horizontal">Horizontal</option>
-              <option value="vertical">Vertical</option>
+            <label class="option-label">Sort</label>
+            <select class="select" .value=${c.sort ?? 'highest'} @change=${(e) => this._valueChanged('sort', e.target.value)}>
+              <option value="abc">A–Z</option>
+              <option value="cba">Z–A</option>
+              <option value="highest">Highest first</option>
+              <option value="lowest">Lowest first</option>
+              <option value="custom">Custom (use order)</option>
             </select>
           </div>
-          <div class="option-row">
-            <label class="option-label">
-              <input
-                type="checkbox"
-                .checked=${!!(c.fill_card || c.remove_background)}
-                @change=${(e) => {
-                this._valueChanged('fill_card', e.target.checked);
-                this._valueChanged('remove_background', undefined);
-              }}
-              />
-              Fill card
-            </label>
-          </div>
-          <div class="option-help">When enabled, removes the card background and makes the bar fill the grid cell</div>
           <div class="option-row">
             <label class="option-label">Gradient</label>
             <select
@@ -693,23 +685,12 @@ class StackedHorizontalBarCardEditor extends LitElement {
               <option value="bevel">Bevel</option>
               <option value="left">Left to right</option>
               <option value="right">Right to left</option>
-              <option value="center">Center</option>
               <option value="top">Top to bottom</option>
               <option value="bottom">Bottom to top</option>
             </select>
           </div>
           <div class="option-row">
-            <label class="option-label">Sort</label>
-            <select class="select" .value=${c.sort ?? 'highest'} @change=${(e) => this._valueChanged('sort', e.target.value)}>
-              <option value="abc">A–Z</option>
-              <option value="cba">Z–A</option>
-              <option value="highest">Highest first</option>
-              <option value="lowest">Lowest first</option>
-              <option value="custom">Custom (use order)</option>
-            </select>
-          </div>
-          <div class="option-row">
-            <label class="option-label">Bar radius (px)</label>
+            <label class="option-label">Radius (px)</label>
             <input
               type="number"
               class="input"
@@ -816,6 +797,52 @@ class StackedHorizontalBarCardEditor extends LitElement {
             <ha-icon icon="mdi:plus"></ha-icon> Add entity
           </button>
         </div>
+
+        <div class="section">
+          <div class="section-header">Layout</div>
+          <div class="option-row">
+            <label class="option-label">Layout</label>
+            <select
+              class="select"
+              .value=${c.layout ?? 'horizontal'}
+              @change=${(e) => this._valueChanged('layout', e.target.value)}
+            >
+              <option value="horizontal">Horizontal</option>
+              <option value="vertical">Vertical</option>
+            </select>
+          </div>
+          <div class="option-row">
+            <label class="option-label">Alignment</label>
+            <select
+              class="select"
+              .value=${c.alignment ?? c.title_alignment ?? c.legend_alignment ?? 'left'}
+              @change=${(e) => this._valueChanged('alignment', e.target.value)}
+            >
+              <option value="left">Left</option>
+              <option value="center">Center</option>
+              <option value="right">Right</option>
+            </select>
+          </div>
+          <div class="option-help">Alignment applies to both title and legend</div>
+          <div class="option-row option-row-toggle">
+            <label class="toggle-row">
+              <span class="toggle-label">Fill card</span>
+              <span class="toggle-switch">
+                <input
+                  type="checkbox"
+                  class="toggle-input"
+                  .checked=${fillCard}
+                  @change=${(e) => {
+                    this._valueChanged('fill_card', e.target.checked);
+                    this._valueChanged('remove_background', undefined);
+                  }}
+                />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </span>
+            </label>
+          </div>
+          <div class="option-help">When enabled, removes the card background and hides title/legend options</div>
+        </div>
       </div>
     `;
   }
@@ -857,15 +884,58 @@ class StackedHorizontalBarCardEditor extends LitElement {
       color: var(--primary-text-color);
       margin-bottom: 6px;
     }
-    .option-label input[type='checkbox'],
-    .checkbox-label input[type='checkbox'] {
-      margin-right: 10px;
+    .option-row-toggle {
+      margin-bottom: 14px;
+    }
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      cursor: pointer;
+      gap: 12px;
+    }
+    .toggle-label {
+      font-size: 14px;
+      color: var(--primary-text-color);
+    }
+    .toggle-switch {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .toggle-input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      margin: 0;
+      pointer-events: none;
+    }
+    .toggle-track {
+      display: flex;
+      align-items: center;
+      width: 44px;
+      height: 24px;
+      border-radius: 12px;
+      background: var(--disabled-color, rgba(255, 255, 255, 0.2));
+      transition: background 0.2s ease;
+      padding: 0 2px;
+      box-sizing: border-box;
+    }
+    .toggle-input:checked + .toggle-track {
+      background: var(--primary-color);
+    }
+    .toggle-thumb {
       width: 20px;
       height: 20px;
-      min-width: 20px;
-      min-height: 20px;
-      cursor: pointer;
-      border-radius: var(--ha-card-border-radius, 12px);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease;
+    }
+    .toggle-input:checked + .toggle-track .toggle-thumb {
+      transform: translateX(20px);
+      background: rgba(255, 255, 255, 0.95);
     }
     .option-help {
       font-size: 12px;
@@ -896,7 +966,6 @@ class StackedHorizontalBarCardEditor extends LitElement {
     }
     .select {
       cursor: pointer;
-      max-width: 200px;
     }
     .select option {
       background: var(--card-background-color, var(--ha-card-background, #fff));
